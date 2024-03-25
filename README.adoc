@@ -42,3 +42,11 @@ export FLASK_APP=api
 export FLASK_ENV=development
 flask run
 
+
+== Uniqueness Constraint
+
+CREATE CONSTRAINT UserEmailUnique
+IF NOT EXISTS
+FOR (user:User)
+REQUIRE user.email IS UNIQUE;
+
