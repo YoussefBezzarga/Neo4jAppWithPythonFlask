@@ -45,6 +45,7 @@ flask run
 
 == Uniqueness Constraint
 
+[source,cypher]
 CREATE CONSTRAINT UserEmailUnique
 IF NOT EXISTS
 FOR (user:User)
