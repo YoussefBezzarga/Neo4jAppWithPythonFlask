@@ -182,6 +182,35 @@ The data model consists of the following elements:
 
 These relationships define the connections between nodes in the graph, such as actors acting in movies, directors directing movies, etc.
 
+== How Similarity for Recommendations is Calculated
+
+The similarity for recommendations is calculated using a collaborative filtering approach, leveraging the relationships between movies and user interactions within the movie database. One method to determine movie similarity is by identifying movies that share common attributes such as genre, actors, directors, and user preferences.
+
+For example, in the Neo4j-based movie database application, similarity for recommendations is found using a custom Cypher query. Here's a simplified overview of the process:
+[source,cypher]
+MATCH (:Movie {tmdbId: $id})-[:IN_GENRE|ACTED_IN|DIRECTED]->()<-[:IN_GENRE|ACTED_IN|DIRECTED]-(m)
+WHERE m.imdbRating IS NOT NULL
+WITH m, count(*) AS inCommon
+WITH m, inCommon, m.imdbRating * inCommon AS score
+ORDER BY score DESC
+SKIP $skip
+LIMIT $limit
+RETURN m {
+ .*,
+ score: score,
+ favorite: m.tmdbId IN $favorites
+} AS movie
+
+
+This Cypher query retrieves movies similar to the specified movie ID based on shared attributes such as genre, actors, and directors. It calculates a score for each similar movie, prioritizing those with higher IMDb ratings and common attributes. Additionally, it identifies whether each movie is favorited by the user, enhancing personalized recommendations.
+
+2. **Execution and Retrieval:**
+The Cypher query is executed within the Neo4j database, and the results are fetched using the Python driver. These results are then processed and returned as similar movie recommendations to the user.
+
+This collaborative filtering approach enables the movie database application to provide personalized and relevant recommendations based on user preferences and similarities between movies.
+
+
+
 == Test Files
 
 These test files are included inside the `tests` folder and serve various purposes:
