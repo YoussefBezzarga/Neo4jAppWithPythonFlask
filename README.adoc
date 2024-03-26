@@ -83,7 +83,7 @@ source neoflix/bin/activate
 
 == Connecting with your Neo4j Sandbox Credentials
 
-Once you have enrolled to the Neo4j course (link is on top of this files), you will recieve your Neo4j sandbox credentials that you can put in the `\.env` file.
+Once you have enrolled to the Neo4j course (link is on top of this files), you will recieve your Neo4j sandbox credentials that you can put in the `\.env` file ( rename `.env.example` to `.env` ).
 
 [source,env]
 NEO4J_URI=bolt://{sandbox_ip}:{sandbox_boltPort}
